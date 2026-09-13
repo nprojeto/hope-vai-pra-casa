@@ -1,0 +1,234 @@
+/* ============================================================
+   HOPE VAI PRA CASA! — Espaço do Saber
+   Identidade: cadernão de recordações, cores do logo.
+   ============================================================ */
+
+:root {
+  --papel:    #FBF6EA;
+  --papel-2:  #FFFFFF;
+  --tinta:    #2F2C26;
+  --suave:    #857F70;
+  --linha:    #E6DDC8;
+
+  --azul:     #17386B;
+  --coral:    #E4574C;
+  --verde:    #3FB3A8;
+  --amarelo:  #F2C230;
+  --laranja:  #E8892B;
+  --roxo:     #7A5AA8;
+
+  --raio:     22px;
+  --sombra:   0 10px 0 -4px rgba(47,44,38,.06);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  background: var(--papel);
+  color: var(--tinta);
+  font-family: "Nunito", system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-text-size-adjust: 100%;
+}
+
+h1, h2, h3, .display { font-family: "Baloo 2", system-ui, sans-serif; line-height: 1.15; margin: 0 0 .4em; }
+h1 { font-size: 2rem; color: var(--azul); }
+h2 { font-size: 1.4rem; color: var(--azul); }
+h3 { font-size: 1.1rem; }
+p  { margin: 0 0 1em; }
+a  { color: var(--coral); }
+
+.env { max-width: 900px; margin: 0 auto; padding: 0 18px 90px; }
+.pilha > * + * { margin-top: 14px; }
+
+/* ---------- céu de fundo ---------- */
+.ceu {
+  position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none;
+  background:
+    radial-gradient(circle at 12% 8%,  rgba(63,179,168,.10) 0 90px, transparent 91px),
+    radial-gradient(circle at 88% 4%,  rgba(242,194,48,.14) 0 70px, transparent 71px),
+    radial-gradient(circle at 94% 60%, rgba(228,87,76,.08)  0 120px, transparent 121px),
+    radial-gradient(circle at 4% 72%,  rgba(122,90,168,.08) 0 100px, transparent 101px);
+}
+
+/* ---------- topo ---------- */
+.topo {
+  display: flex; align-items: center; gap: 14px;
+  max-width: 900px; margin: 0 auto; padding: 20px 18px 10px;
+}
+.marca { display: flex; align-items: center; gap: 11px; text-decoration: none; color: inherit; }
+.marca img { width: 46px; height: 46px; }
+.marca b { font-family: "Baloo 2", sans-serif; font-size: 1.15rem; color: var(--azul); display: block; line-height: 1.1; }
+.marca span { font-size: .72rem; letter-spacing: .16em; color: var(--suave); }
+.topo .direita { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+
+/* ---------- navegação ---------- */
+.abas {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; gap: 6px; overflow-x: auto;
+  padding: 10px 18px; background: rgba(251,246,234,.94);
+  backdrop-filter: blur(8px); border-bottom: 2px solid var(--linha);
+}
+.abas .env-abas { display: flex; gap: 6px; max-width: 900px; margin: 0 auto; width: 100%; }
+.aba {
+  border: 0; background: transparent; cursor: pointer; white-space: nowrap;
+  font: 600 .95rem "Nunito", sans-serif; color: var(--suave);
+  padding: 8px 15px; border-radius: 999px;
+}
+.aba:hover { color: var(--tinta); }
+.aba.on { background: var(--azul); color: #fff; }
+
+/* ---------- cartões ---------- */
+.cartao {
+  background: var(--papel-2); border: 2px solid var(--linha);
+  border-radius: var(--raio); padding: 22px; box-shadow: var(--sombra);
+}
+.cartao + .cartao { margin-top: 16px; }
+.cartao h2 { margin-bottom: .6em; }
+
+.fita {
+  display: inline-block; font: 700 .78rem "Nunito", sans-serif;
+  padding: 4px 12px; border-radius: 999px; background: #F1ECE0; color: var(--suave);
+}
+.fita.verde   { background: #E3F5F2; color: #1F7C73; }
+.fita.coral   { background: #FDEDEB; color: #B53C33; }
+.fita.amarelo { background: #FDF3D6; color: #8A6B10; }
+.fita.azul    { background: #E7EEF8; color: var(--azul); }
+
+/* ---------- formulários ---------- */
+label { display: block; font-weight: 700; font-size: .9rem; margin: 0 0 5px; }
+input, select, textarea {
+  width: 100%; font: inherit; color: inherit;
+  padding: 12px 14px; border-radius: 14px;
+  border: 2px solid var(--linha); background: #FEFCF7;
+}
+input:focus, select:focus, textarea:focus {
+  outline: 3px solid rgba(63,179,168,.35); border-color: var(--verde);
+}
+textarea { min-height: 130px; resize: vertical; line-height: 1.8; }
+.campo + .campo { margin-top: 13px; }
+.dupla { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+.ajuda { font-size: .82rem; color: var(--suave); margin: 5px 0 0; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  font: 700 1rem "Nunito", sans-serif; cursor: pointer;
+  padding: 13px 24px; border-radius: 999px; border: 0;
+  background: var(--coral); color: #fff;
+}
+.btn:hover  { filter: brightness(1.07); }
+.btn:active { transform: translateY(1px); }
+.btn[disabled] { opacity: .5; cursor: not-allowed; }
+.btn.largo { width: 100%; }
+.btn.azul  { background: var(--azul); }
+.btn.verde { background: var(--verde); }
+.btn.claro { background: #F1ECE0; color: var(--tinta); }
+.btn.mini  { padding: 7px 15px; font-size: .85rem; }
+.btn.risco { background: transparent; color: var(--suave); border: 2px solid var(--linha); }
+
+.codigo-input {
+  font: 700 2rem "Baloo 2", sans-serif; letter-spacing: .5em;
+  text-align: center; padding: 16px 10px 16px 24px;
+}
+
+/* ---------- avisos ---------- */
+.aviso {
+  border-radius: 16px; padding: 13px 17px; font-size: .93rem; font-weight: 600;
+  border: 2px solid; margin-bottom: 14px;
+}
+.aviso.erro { background: #FDEDEB; border-color: #F3C3BE; color: #B53C33; }
+.aviso.ok   { background: #E3F5F2; border-color: #A9E0D9; color: #1F7C73; }
+.aviso.info { background: #FDF3D6; border-color: #F0DEA4; color: #8A6B10; }
+
+/* ---------- ficha de registro (inspirada no caderno de papel) ---------- */
+.ficha {
+  background: var(--papel-2); border-radius: 24px; padding: 20px;
+  border: 3px solid var(--linha); box-shadow: var(--sombra); margin-bottom: 18px;
+}
+.ficha-topo {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px;
+  padding-bottom: 12px; border-bottom: 2px dashed var(--linha); margin-bottom: 16px;
+}
+.ficha-topo .nome { font: 700 1.25rem "Baloo 2", sans-serif; color: var(--azul); }
+.ficha-topo .data { margin-left: auto; color: var(--suave); font-size: .88rem; }
+.ficha-corpo { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+@media (max-width: 700px) { .ficha-corpo, .dupla { grid-template-columns: 1fr; } }
+
+.painel-fotos {
+  background: #EAF3FB; border: 3px dotted #8FBEE6; border-radius: 18px; padding: 11px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 9px; align-content: start;
+}
+.painel-fotos figure { margin: 0; }
+.painel-fotos img {
+  width: 100%; aspect-ratio: 1; object-fit: cover;
+  border-radius: 10px; border: 4px solid #fff; display: block;
+}
+.painel-fotos figcaption {
+  font-size: .75rem; text-align: center; color: var(--azul);
+  background: #fff; border-radius: 999px; padding: 2px 8px; margin-top: 5px;
+}
+.escrito {
+  background: repeating-linear-gradient(
+    transparent, transparent 31px, var(--linha) 31px, var(--linha) 32px);
+  line-height: 32px; font-size: 1rem; white-space: pre-wrap;
+}
+.rotulo { font: 700 .8rem "Nunito", sans-serif; letter-spacing: .08em; margin-bottom: 6px; }
+.rotulo.verde { color: var(--verde); }
+.rotulo.coral { color: var(--coral); }
+
+.palavra {
+  margin-top: 16px; padding-top: 12px; border-top: 2px dashed var(--linha);
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.palavra b { font: 700 1.15rem "Baloo 2", sans-serif; color: var(--roxo); }
+
+/* ---------- listas ---------- */
+.item {
+  display: flex; align-items: center; gap: 13px;
+  padding: 13px 0; border-bottom: 2px dashed var(--linha);
+}
+.item:last-child { border-bottom: 0; }
+.item .cresce { flex: 1; min-width: 0; }
+.item .titulo { font-weight: 700; }
+.item .sub { font-size: .85rem; color: var(--suave); }
+.acoes { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.retrato {
+  width: 52px; height: 52px; border-radius: 50%; object-fit: cover;
+  border: 3px solid #fff; box-shadow: 0 0 0 2px var(--linha); flex: none;
+  background: #F1ECE0;
+}
+.retrato.g { width: 84px; height: 84px; }
+
+.vazio { text-align: center; color: var(--suave); padding: 34px 16px; }
+.vazio .emoji { font-size: 2.4rem; display: block; margin-bottom: 8px; }
+
+.chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+.chip {
+  border: 2px solid var(--linha); background: #fff; border-radius: 999px;
+  padding: 6px 14px; font: 600 .88rem "Nunito", sans-serif; cursor: pointer; color: var(--suave);
+}
+.chip.on { background: var(--verde); border-color: var(--verde); color: #fff; }
+
+/* ---------- senha da visita ---------- */
+.senha-caixa {
+  background: #FFF7E8; border: 3px dashed var(--amarelo);
+  border-radius: 18px; padding: 18px; text-align: center;
+}
+.senha-caixa .valor {
+  font: 700 2rem "Baloo 2", sans-serif; letter-spacing: .28em; color: var(--laranja);
+}
+
+/* ---------- carregando ---------- */
+.carregando { text-align: center; padding: 46px; color: var(--suave); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .ficha, .cartao { transition: box-shadow .2s ease; }
+}
+@media (max-width: 540px) {
+  h1 { font-size: 1.6rem; }
+  .cartao, .ficha { padding: 17px; }
+  .env { padding: 0 13px 80px; }
+}

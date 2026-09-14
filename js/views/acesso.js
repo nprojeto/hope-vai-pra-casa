@@ -2,7 +2,7 @@
 // ============================================================
 // Entrar, criar conta, confirmar e-mail, nova senha
 // ============================================================
-const { estado, api, Sessao, lerImagem } = window.App;
+const { estado, api, Sessao, lerImagem, mascaraTelefone } = window.App;
 window.Telas = window.Telas || {};
 
 // ------------------------------------------------------------
@@ -49,6 +49,7 @@ window.Telas.cadastro = {
     familiaConvite: null, erro: "", indo: false,
   }),
   computed: { MARCA() { return window.MARCA; } },
+  watch: { "f.telefone"(v) { this.f.telefone = mascaraTelefone(v); } },
   async created() {
     const c = new URLSearchParams(location.hash.split("?")[1] || "").get("convite");
     if (c) {
@@ -92,7 +93,7 @@ window.Telas.cadastro = {
       <div class="campo"><label>E-mail</label>
         <input v-model="f.email" type="email" :disabled="!!familiaConvite"></div>
       <div class="dupla" style="margin-top:13px">
-        <div><label>Telefone</label><input v-model="f.telefone" placeholder="(00) 00000-0000"></div>
+        <div><label>Telefone</label><input v-model="f.telefone" inputmode="tel" maxlength="15" placeholder="(00) 00000-0000"></div>
         <div><label>Sou</label>
           <select v-model="f.parentesco">
             <option value="">Escolher</option>

@@ -246,3 +246,6 @@ textarea { min-height: 130px; resize: vertical; line-height: 1.8; }
   filter: drop-shadow(0 8px 10px rgba(47,44,38,.12));
 }
 .hope-hero.pequeno { width: 84px; }
+
+/* mascote: mostra a foto inteira, sem cortar */
+.retrato.mascote { object-fit: contain; background: #fff; padding: 4px; }

@@ -105,14 +105,17 @@ window.Telas.cadastro = {
             <option value="">Escolher</option>
             <option>Mãe</option><option>Pai</option><option>Avó</option><option>Avô</option>
             <option>Tia</option><option>Tio</option><option>Responsável</option>
-          </select></div>
+            <option>Administrador</option>
+          </select>
+          <p v-if="f.parentesco === 'Administrador'" class="ajuda">
+            Acesso da escola. Um administrador já existente precisa liberar depois.</p></div>
       </div>
       <div class="dupla" style="margin-top:13px">
         <div><label>Senha</label><input v-model="f.senha" type="password"></div>
         <div><label>Repita a senha</label><input v-model="f.senha2" type="password"></div>
       </div>
 
-      <template v-if="!familiaConvite">
+      <template v-if="!familiaConvite && f.parentesco !== 'Administrador'">
         <hr style="border:0;border-top:2px dashed var(--linha);margin:22px 0">
         <div class="campo"><label>Nome da família</label>
           <input v-model="f.familia_nome" placeholder="Família Souza">

@@ -22,9 +22,18 @@ window.Telas.escola = {
     criancasFiltradas() {
       return this.filtroTurma ? this.criancas.filter((c) => c.turma_id === this.filtroTurma) : this.criancas;
     },
+    hopeEscolhido() { return this.hopes.find((h) => h.id === this.novaVisita.hope_id) || null; },
+    criancasDoHope() {
+      const h = this.hopeEscolhido;
+      if (!h) return [];
+      return this.criancas.filter((c) =>
+        (!h.turma_id || c.turma_id === h.turma_id) &&
+        (!h.turno_id || c.turno_id === h.turno_id));
+    },
     pendentes() { return this.usuarios.filter((u) => !u.aprovado && u.email_confirmado); },
     aprovados() { return this.usuarios.filter((u) => u.aprovado); },
   },
+  watch: { "novaVisita.hope_id"() { this.novaVisita.crianca_id = ""; } },
   async created() { await this.tudo(); },
   methods: {
     brD,
@@ -49,7 +58,7 @@ window.Telas.escola = {
       catch (e) { this.erro = e.message; }
     },
     async tornarAdmin(u) {
-      if (!confirm("Dar acesso de escola para " + u.nome + "?")) return;
+      if (!confirm("Dar acesso de administrador para " + u.nome + "?")) return;
       await Ap.post("/admin/usuario-papel", { usuario_id: u.id, papel: "admin" });
       await this.tudo();
     },
@@ -135,9 +144,15 @@ window.Telas.escola = {
           <img class="retrato" :src="u.foto_url || 'assets/adulto.svg'">
           <div class="cresce">
             <div class="titulo">{{ u.nome }}</div>
-            <div class="sub">{{ u.email }} · {{ u.familias ? u.familias.nome : 'Sem família' }}</div>
+            <div class="sub">{{ u.email }} · {{ u.familias ? u.familias.nome : 'Sem família' }}
+              <span v-if="u.parentesco === 'Administrador'" class="fita amarelo">Pediu acesso de admin</span>
+            </div>
           </div>
-          <button class="btn verde mini" @click="aprovar(u, true)">Aprovar</button>
+          <div class="acoes">
+            <button class="btn verde mini" @click="aprovar(u, true)">Aprovar</button>
+            <button class="btn risco mini" v-if="u.parentesco === 'Administrador'"
+                    @click="tornarAdmin(u)">Tornar admin</button>
+          </div>
         </div>
       </div>
       <div class="cartao">
@@ -145,11 +160,11 @@ window.Telas.escola = {
         <div class="item" v-for="u in aprovados" :key="u.id">
           <img class="retrato" :src="u.foto_url || 'assets/adulto.svg'">
           <div class="cresce">
-            <div class="titulo">{{ u.nome }} <span v-if="u.papel==='admin'" class="fita azul">Escola</span></div>
+            <div class="titulo">{{ u.nome }} <span v-if="u.papel==='admin'" class="fita azul">Admin</span></div>
             <div class="sub">{{ u.email }} · {{ u.familias ? u.familias.nome : '—' }}</div>
           </div>
           <div class="acoes">
-            <button v-if="u.papel!=='admin'" class="btn risco mini" @click="tornarAdmin(u)">Tornar escola</button>
+            <button v-if="u.papel!=='admin'" class="btn risco mini" @click="tornarAdmin(u)">Tornar admin</button>
             <button class="btn risco mini" @click="aprovar(u, false)">Retirar</button>
           </div>
         </div>
@@ -167,10 +182,13 @@ window.Telas.escola = {
                 {{ h.nome }} — {{ h.turmas ? h.turmas.nome : 'sem turma' }} / {{ h.turnos ? h.turnos.nome : '—' }}
               </option></select></div>
           <div><label>Criança</label>
-            <select v-model="novaVisita.crianca_id"><option value="">Escolher</option>
-              <option v-for="c in criancas" :value="c.id">
-                {{ c.nome }} — {{ c.turmas ? c.turmas.nome : 'sem turma' }}
-              </option></select></div>
+            <select v-model="novaVisita.crianca_id" :disabled="!hopeEscolhido">
+              <option value="">{{ hopeEscolhido ? 'Escolher' : 'Escolha o Hope primeiro' }}</option>
+              <option v-for="c in criancasDoHope" :value="c.id">
+                {{ c.nome }} — {{ c.turnos ? c.turnos.nome : '' }}
+              </option></select>
+            <p v-if="hopeEscolhido && !criancasDoHope.length" class="ajuda">
+              Nenhuma criança cadastrada nessa turma e turno ainda.</p></div>
         </div>
         <div class="dupla" style="margin-top:13px">
           <div><label>Primeiro dia</label><input v-model="novaVisita.data_inicio" type="date"></div>
@@ -226,7 +244,7 @@ window.Telas.escola = {
         <h2>Mascotes cadastrados</h2>
         <div v-if="!hopes.length" class="vazio"><span class="emoji">🐑</span>Nenhum Hope cadastrado ainda.</div>
         <div class="item" v-for="h in hopes" :key="h.id">
-          <img class="retrato" :src="h.foto_url || MARCA.hope">
+          <img class="retrato mascote" :src="h.foto_url || MARCA.hope">
           <div class="cresce">
             <div class="titulo">{{ h.nome }}</div>
             <div class="sub">{{ h.turmas ? h.turmas.nome : 'Sem turma' }} · {{ h.turnos ? h.turnos.nome : 'Sem turno' }}</div>

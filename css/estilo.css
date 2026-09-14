@@ -59,9 +59,6 @@ a  { color: var(--coral); }
   max-width: 900px; margin: 0 auto; padding: 20px 18px 10px;
 }
 .marca { display: flex; align-items: center; gap: 11px; text-decoration: none; color: inherit; }
-.marca img { width: 46px; height: 46px; }
-.marca b { font-family: "Baloo 2", sans-serif; font-size: 1.15rem; color: var(--azul); display: block; line-height: 1.1; }
-.marca span { font-size: .72rem; letter-spacing: .16em; color: var(--suave); }
 .topo .direita { margin-left: auto; display: flex; align-items: center; gap: 10px; }
 
 /* ---------- navegação ---------- */
@@ -232,3 +229,20 @@ textarea { min-height: 130px; resize: vertical; line-height: 1.8; }
   .cartao, .ficha { padding: 17px; }
   .env { padding: 0 13px 80px; }
 }
+
+/* ---------- marca real ---------- */
+.topo .marca img.logo-marca { width: auto; height: 36px; display: block; }
+.marca .divisa {
+  width: 2px; height: 26px; background: var(--linha); border-radius: 2px; display: block;
+}
+.marca b { font-family: "Baloo 2", sans-serif; font-size: 1.1rem; color: var(--azul); line-height: 1.1; }
+@media (max-width: 520px) {
+  .topo .marca img.logo-marca { height: 28px; }
+  .marca b { font-size: .95rem; }
+}
+
+.hope-hero {
+  display: block; width: 118px; margin: -8px auto 6px;
+  filter: drop-shadow(0 8px 10px rgba(47,44,38,.12));
+}
+.hope-hero.pequeno { width: 84px; }

@@ -1,3 +1,4 @@
+(function () {
 // ============================================================
 // Conversa com a Edge Function do Supabase.
 // ============================================================
@@ -92,3 +93,4 @@ function lerImagem(arquivo, maxLado = 1280, qualidade = 0.82) {
 const dataBR = (d) => (d ? d.split("T")[0].split("-").reverse().join("/") : "");
 
 window.App = { estado, api, Sessao, lerImagem, dataBR };
+})();

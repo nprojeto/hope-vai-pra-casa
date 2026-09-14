@@ -1,3 +1,4 @@
+(function () {
 // ============================================================
 // Entrar, criar conta, confirmar e-mail, nova senha
 // ============================================================
@@ -7,6 +8,7 @@ window.Telas = window.Telas || {};
 // ------------------------------------------------------------
 window.Telas.entrar = {
   data: () => ({ email: "", senha: "", erro: "", indo: false }),
+  computed: { MARCA() { return window.MARCA; } },
   methods: {
     async entrar() {
       this.erro = ""; this.indo = true;
@@ -20,7 +22,8 @@ window.Telas.entrar = {
   },
   template: `
   <div class="env" style="max-width:440px;padding-top:28px">
-    <div class="cartao">
+    <div class="cartao" style="text-align:left">
+      <img :src="MARCA.hope" class="hope-hero" alt="Hope">
       <h1>Bem-vindo de volta</h1>
       <p class="ajuda" style="margin-bottom:18px">Entre para ver o que o Hope andou aprontando.</p>
       <div v-if="erro" class="aviso erro">{{ erro }}</div>
@@ -45,6 +48,7 @@ window.Telas.cadastro = {
          familia_nome: "", familia_foto: null, convite: "" },
     familiaConvite: null, erro: "", indo: false,
   }),
+  computed: { MARCA() { return window.MARCA; } },
   async created() {
     const c = new URLSearchParams(location.hash.split("?")[1] || "").get("convite");
     if (c) {
@@ -74,6 +78,7 @@ window.Telas.cadastro = {
   template: `
   <div class="env" style="max-width:520px;padding-top:24px">
     <div class="cartao">
+      <img :src="MARCA.hope" class="hope-hero pequeno" alt="Hope">
       <h1>Criar minha conta</h1>
       <p class="ajuda" style="margin-bottom:18px">
         Cada adulto tem um acesso próprio. As crianças são cadastradas dentro da família.
@@ -207,3 +212,4 @@ window.Telas.esqueci = {
     </div>
   </div>`,
 };
+})();

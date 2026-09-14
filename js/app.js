@@ -1,3 +1,4 @@
+(function () {
 // ============================================================
 // Montagem do aplicativo e navegação por # (funciona no GitHub Pages)
 // ============================================================
@@ -35,15 +36,21 @@ createApp({
     const logado = computed(() => !!estado.usuario);
     const admin = computed(() => estado.usuario && estado.usuario.papel === "admin");
 
-    return { estado, rota, tela, logado, admin, sair: api.sair, CONFIG: window.CONFIG };
+    const ico = document.createElement("link");
+    ico.rel = "icon"; ico.href = window.MARCA.icone;
+    document.head.appendChild(ico);
+
+    return { estado, rota, tela, logado, admin, sair: api.sair,
+             CONFIG: window.CONFIG, MARCA: window.MARCA };
   },
   template: `
   <div class="ceu"></div>
 
   <header class="topo">
     <a class="marca" :href="logado ? '#/linha' : '#/entrar'">
-      <img src="assets/logo.svg" alt="">
-      <span><b>{{ CONFIG.PROJETO }}</b><span>{{ CONFIG.ESCOLA.toUpperCase() }}</span></span>
+      <img class="logo-marca" :src="MARCA.logo" :alt="CONFIG.ESCOLA">
+      <span class="divisa"></span>
+      <b>{{ CONFIG.PROJETO }}</b>
     </a>
     <div class="direita" v-if="logado">
       <span class="fita azul">{{ estado.usuario.nome.split(' ')[0] }}</span>
@@ -65,3 +72,4 @@ createApp({
   </main>
   `,
 }).mount("#app");
+})();

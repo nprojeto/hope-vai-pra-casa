@@ -1,3 +1,4 @@
+(function () {
 // ============================================================
 // Painel da escola (admin)
 // ============================================================
@@ -16,6 +17,7 @@ window.Telas.escola = {
     filtroTurma: "",
   }),
   computed: {
+    MARCA() { return window.MARCA; },
     turmasG() { return Es.turmas; },
     criancasFiltradas() {
       return this.filtroTurma ? this.criancas.filter((c) => c.turma_id === this.filtroTurma) : this.criancas;
@@ -224,7 +226,7 @@ window.Telas.escola = {
         <h2>Mascotes cadastrados</h2>
         <div v-if="!hopes.length" class="vazio"><span class="emoji">🐑</span>Nenhum Hope cadastrado ainda.</div>
         <div class="item" v-for="h in hopes" :key="h.id">
-          <img class="retrato" :src="h.foto_url || 'assets/hope.svg'">
+          <img class="retrato" :src="h.foto_url || MARCA.hope">
           <div class="cresce">
             <div class="titulo">{{ h.nome }}</div>
             <div class="sub">{{ h.turmas ? h.turmas.nome : 'Sem turma' }} · {{ h.turnos ? h.turnos.nome : 'Sem turno' }}</div>
@@ -284,3 +286,4 @@ window.Telas.escola = {
     </template>
   </div>`,
 };
+})();

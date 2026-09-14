@@ -46,7 +46,7 @@ window.Telas.cadastro = {
   data: () => ({
     f: { nome: "", email: "", senha: "", senha2: "", telefone: "", parentesco: "",
          familia_nome: "", familia_foto: null, convite: "" },
-    familiaConvite: null, erro: "", indo: false,
+    familiaConvite: null, jaCadastrado: false, erro: "", indo: false,
   }),
   computed: { MARCA() { return window.MARCA; } },
   watch: { "f.telefone"(v) { this.f.telefone = mascaraTelefone(v); } },
@@ -57,6 +57,7 @@ window.Telas.cadastro = {
       try {
         const r = await api.get("/auth/convite?codigo=" + encodeURIComponent(c));
         this.familiaConvite = r.familia; this.f.email = r.email;
+        this.jaCadastrado = !!r.ja_cadastrado;
       } catch (e) { this.erro = e.message; this.f.convite = ""; }
     }
   },
@@ -85,8 +86,13 @@ window.Telas.cadastro = {
         Cada adulto tem um acesso próprio. As crianças são cadastradas dentro da família.
       </p>
       <div v-if="erro" class="aviso erro">{{ erro }}</div>
-      <div v-if="familiaConvite" class="aviso ok">
+      <div v-if="familiaConvite && !jaCadastrado" class="aviso ok">
         Você foi convidado para a família <b>{{ familiaConvite.nome }}</b>.
+      </div>
+      <div v-if="jaCadastrado" class="aviso info">
+        Este e-mail já tem conta. Entre normalmente e aceite o convite da família
+        <b>{{ familiaConvite ? familiaConvite.nome : '' }}</b> na aba Minha família.
+        <div style="margin-top:10px"><a class="btn azul mini" href="#/entrar">Ir para o login</a></div>
       </div>
 
       <div class="campo"><label>Seu nome completo</label><input v-model="f.nome"></div>
@@ -116,7 +122,7 @@ window.Telas.cadastro = {
           <img v-if="f.familia_foto" :src="f.familia_foto" class="retrato g" style="margin-top:10px"></div>
       </template>
 
-      <div class="campo" style="margin-top:20px">
+      <div class="campo" style="margin-top:20px" v-if="!jaCadastrado">
         <button class="btn largo" :disabled="indo" @click="criar">
           {{ indo ? 'Enviando...' : 'Criar conta e receber o código' }}</button>
       </div>

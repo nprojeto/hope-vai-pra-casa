@@ -9,8 +9,9 @@ window.Telas.familia = {
   data: () => ({
     erro: "", ok: "", emailConvite: "", linkConvite: "",
     nova: { nome: "", data_nascimento: "", turma_id: "", turno_id: "", foto: null },
-    editando: null, abrindoCrianca: false,
+    editando: null, abrindoCrianca: false, convites: [],
   }),
+  async created() { await this.carregarConvites(); },
   computed: {
     eu() { return E.usuario; },
     familia() { return E.usuario && E.usuario.familia; },
@@ -19,6 +20,21 @@ window.Telas.familia = {
   },
   methods: {
     dBR,
+    async carregarConvites() {
+      try { this.convites = await A.get("/convites/meus"); } catch (e) { this.convites = []; }
+    },
+    async aceitar(c) {
+      this.erro = "";
+      try {
+        E.usuario = await A.post("/convites/aceitar", { codigo: c.codigo });
+        await this.carregarConvites();
+        this.ok = "Pronto! Agora você faz parte da família " + c.familias.nome + ".";
+      } catch (e) { this.erro = e.message; }
+    },
+    async recusar(c) {
+      await A.post("/convites/recusar", { codigo: c.codigo });
+      await this.carregarConvites();
+    },
     async fotoFamilia(ev) {
       try {
         const foto = await lerImg(ev.target.files[0], 800);
@@ -63,6 +79,7 @@ window.Telas.familia = {
         const r = await A.post("/familia/convite", { email: this.emailConvite });
         this.linkConvite = r.link; this.emailConvite = "";
         this.ok = "Convite enviado por e-mail.";
+        await A.carregarUsuario();
       } catch (e) { this.erro = e.message; }
     },
   },
@@ -74,6 +91,23 @@ window.Telas.familia = {
     <div v-if="!eu.aprovado && eu.papel !== 'admin'" class="aviso info">
       Seu cadastro está esperando a aprovação da escola. Enquanto isso você pode completar os dados
       da família e das crianças. A linha do tempo abre assim que a escola liberar.
+    </div>
+
+    <div class="cartao" v-for="c in convites" :key="c.id" style="border-color:var(--verde)">
+      <h2>Convite recebido</h2>
+      <div class="item" style="border:0;padding-top:0">
+        <img class="retrato" :src="c.familias.foto_url || 'assets/familia.svg'">
+        <div class="cresce">
+          <div class="titulo">Família {{ c.familias.nome }}</div>
+          <div class="sub">Convite de {{ c.usuarios ? c.usuarios.nome : 'um responsável' }}</div>
+        </div>
+      </div>
+      <p class="ajuda">Ao aceitar, você passa a fazer parte dessa família e vê a linha do tempo das
+        crianças dela.</p>
+      <div class="acoes">
+        <button class="btn verde" @click="aceitar(c)">Aceitar convite</button>
+        <button class="btn risco" @click="recusar(c)">Recusar</button>
+      </div>
     </div>
 
     <div class="cartao">
